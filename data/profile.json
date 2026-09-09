@@ -1,0 +1,79 @@
+{
+  "name": "Hamza Islah",
+  "title": "PhD candidate in constraint programming and machine learning",
+  "affiliation": "Ai movement, Mohammed VI Polytechnic University",
+  "location": "Rabat, Morocco",
+  "email": "hamza.islah@um6p.ma",
+  "resume": "assets/resume.pdf",
+  "photo": "assets/portrait.jpg",
+  "bio": "I work at the interface between constraint programming and machine learning. My question is a practical one: how far can a learned model go in helping people build, diagnose and solve constraint models, from suggesting the next query in constraint acquisition to predicting whether an instance is satisfiable before a solver spends hours on it.",
+  "profiles": {
+    "google_scholar": "https://scholar.google.com/citations?user=ofqXI7MAAAAJ&hl=fr",
+    "github": "https://github.com/ISLAH-Hamza",
+    "orcid": "https://orcid.org/0009-0009-9027-426X"
+  },
+  "research_interests": [
+    "Integration of machine learning and constraint programming to build systems that help with constraint problem modeling",
+    "Predicting the unsatisfiability of constraint problems",
+    "Using machine learning to improve constraint satisfaction problem solving"
+  ],
+  "education": [
+    {
+      "degree": "PhD in Constraint Programming and Machine Learning",
+      "institution": "Mohammed VI Polytechnic University",
+      "start_year": 2023,
+      "end_year": "present"
+    },
+    {
+      "degree": "Master in Numerical Methods and Applied Statistics",
+      "institution": "Faculty of Science Aïn Chock, University Hassan II Casablanca, Morocco",
+      "start_year": 2020,
+      "end_year": 2022
+    },
+    {
+      "degree": "Bachelor in Applied Mathematics",
+      "institution": "Faculty of Science and Technology Errachidia, University Moulay Ismail, Morocco",
+      "start_year": 2016,
+      "end_year": 2020
+    }
+  ],
+  "publications": {
+    "accepted": [
+      {
+        "title": "Machine Learning Based Recommendation Queries for Constraint Acquisition",
+        "authors": [
+          "Hamza ISLAH",
+          "Driss BENHADDOU"
+        ],
+        "conference": "IEEE 36th International Conference on Tools with Artificial Intelligence (ICTAI)",
+        "year": 2024,
+        "doi": "10.1109/ICTAI62512.2024.00031"
+      }
+    ],
+    "under_review": [
+      {
+        "title": "Recommendation Queries for Constraint Acquisition via Link Prediction",
+        "authors": [
+          "Hamza ISLAH",
+          "Younes Mechqrane"
+        ]
+      },
+      {
+        "title": "Graph Neural Networks for CSP Satisfiability Prediction",
+        "authors": [
+          "Hamza ISLAH",
+          "Younes Mechqrane"
+        ]
+      }
+    ]
+  },
+  "experience": [
+    {
+      "position": "Data Science Intern",
+      "institution": "Shared System",
+      "start_date": "2023-02",
+      "end_date": "2023-05",
+      "description": "Research in constraint programming and machine learning, focused on optimization problems and their applications."
+    }
+  ]
+}
