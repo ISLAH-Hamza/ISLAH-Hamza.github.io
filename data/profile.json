@@ -1,12 +1,13 @@
 {
-  "name": "Hamza Islah",
+  "name": "Hamza ISLAH",
   "title": "PhD candidate in constraint programming and machine learning",
   "affiliation": "Ai movement, Mohammed VI Polytechnic University",
   "location": "Rabat, Morocco",
   "email": "hamza.islah@um6p.ma",
+  "personal_email": "islah.hamza1997@gmail.com",
   "resume": "assets/resume.pdf",
   "photo": "assets/portrait.jpg",
-  "bio": "I work at the interface between constraint programming and machine learning. My question is a practical one: how far can a learned model go in helping people build, diagnose and solve constraint models, from suggesting the next query in constraint acquisition to predicting whether an instance is satisfiable before a solver spends hours on it.",
+  "bio": "I am a PhD candidate working at the intersection of Constraint Programming and Machine Learning. My research explores how machine learning can be used to support different stages of constraint problem solving, from helping users acquire and refine constraint models through query recommendation to predicting whether a problem is satisfiable before running an expensive solver. I am particularly interested in understanding how learning can complement the reasoning capabilities of constraint solvers and help make constraint programming more practical and adaptable.",
   "profiles": {
     "google_scholar": "https://scholar.google.com/citations?user=ofqXI7MAAAAJ&hl=fr",
     "github": "https://github.com/ISLAH-Hamza",
@@ -21,8 +22,14 @@
     {
       "degree": "PhD in Constraint Programming and Machine Learning",
       "institution": "Mohammed VI Polytechnic University",
-      "start_year": 2023,
+      "start_year": 2024,
       "end_year": "present"
+    },
+    {
+      "degree": "Predoc in Constraint Programming and Machine Learning",
+      "institution": "Mohammed VI Polytechnic University",
+      "start_year": 2023,
+      "end_year": 2024
     },
     {
       "degree": "Master in Numerical Methods and Applied Statistics",
@@ -71,8 +78,8 @@
     {
       "position": "Data Science Intern",
       "institution": "Shared System",
-      "start_date": "2023-02",
-      "end_date": "2023-05",
+      "start_date": "2022-02",
+      "end_date": "2022-05",
       "description": "Research in constraint programming and machine learning, focused on optimization problems and their applications."
     }
   ]

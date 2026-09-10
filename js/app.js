@@ -14,6 +14,27 @@
     dblp: "DBLP"
   };
 
+  // Font Awesome classes for each profile key, plus the built-in
+  // email/resume links. Unknown keys fall back to a generic link glyph.
+  var LINK_ICONS = {
+    google_scholar: "fa-brands fa-google-scholar",
+    github: "fa-brands fa-github",
+    orcid: "fa-brands fa-orcid",
+    linkedin: "fa-brands fa-linkedin",
+    dblp: "fa-solid fa-book",
+    twitter: "fa-brands fa-x-twitter",
+    mastodon: "fa-brands fa-mastodon",
+    website: "fa-solid fa-globe",
+    email: "fa-solid fa-envelope",
+    resume: "fa-solid fa-file-arrow-down"
+  };
+
+  function icon(key) {
+    var i = el("i", LINK_ICONS[key] || "fa-solid fa-link");
+    i.setAttribute("aria-hidden", "true");
+    return i;
+  }
+
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -69,7 +90,7 @@
 
   function renderRail(data) {
     var surname = (data.name || "").split(" ").slice(-1)[0];
-    fill("name", titleCaseName(data.name || ""));
+    fill("name", data.name || "");
     fill("role", data.title || "");
     fill("affil", [data.affiliation, data.location].filter(Boolean).join(", "));
     document.title = titleCaseName(data.name || "Portfolio");
@@ -80,13 +101,17 @@
     Object.keys(data.profiles || {}).forEach(function (key) {
       if (!data.profiles[key]) return;
       var li = el("li");
-      li.appendChild(link(data.profiles[key], LINK_LABELS[key] || humanize(key)));
+      var a = link(data.profiles[key], LINK_LABELS[key] || humanize(key));
+      a.insertBefore(icon(key), a.firstChild);
+      li.appendChild(a);
       list.appendChild(li);
     });
 
     if (data.email) {
       var mail = el("li");
-      mail.appendChild(link("mailto:" + data.email, "Email"));
+      var mailLink = link("mailto:" + data.email, "Email");
+      mailLink.insertBefore(icon("email"), mailLink.firstChild);
+      mail.appendChild(mailLink);
       list.appendChild(mail);
     }
 
@@ -97,6 +122,8 @@
         cv.target = "_blank";
         cv.rel = "noopener";
         cv.hidden = false;
+        var cvIcon = cv.querySelector("i");
+        if (!cvIcon) cv.insertBefore(icon("resume"), cv.firstChild);
       } else {
         cv.hidden = true;
       }
@@ -121,7 +148,12 @@
     var ul = document.getElementById("interests");
     ul.innerHTML = "";
     (data.research_interests || []).forEach(function (item) {
-      ul.appendChild(el("li", null, item));
+      var li = el("li");
+      var mark = el("i", "fa-solid fa-circle");
+      mark.setAttribute("aria-hidden", "true");
+      li.appendChild(mark);
+      li.appendChild(document.createTextNode(item));
+      ul.appendChild(li);
     });
   }
 
@@ -204,14 +236,20 @@
     });
   }
 
+  function contactLine(host, lead, address) {
+    if (!address) return;
+    var p = el("p", "contact-line");
+    p.appendChild(document.createTextNode(lead + " "));
+    p.appendChild(link("mailto:" + address, address));
+    p.appendChild(document.createTextNode("."));
+    host.appendChild(p);
+  }
+
   function renderContact(data) {
     var host = document.getElementById("contact-email");
     host.innerHTML = "";
-    if (data.email) {
-      host.appendChild(document.createTextNode("Write to me at "));
-      host.appendChild(link("mailto:" + data.email, data.email));
-      host.appendChild(document.createTextNode("."));
-    }
+    contactLine(host, "Write to me at", data.email);
+    contactLine(host, "or, for personal matters,", data.personal_email);
   }
 
   /* ---------- section highlighting in the side nav ---------- */
