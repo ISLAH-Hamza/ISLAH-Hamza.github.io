@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://islah-hamza.github.io/sitemap.xml

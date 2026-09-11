@@ -1,18 +1,5 @@
 {
-  "name": "Hamza ISLAH",
-  "title": "PhD candidate in constraint programming and machine learning",
-  "affiliation": "Ai movement, Mohammed VI Polytechnic University",
-  "location": "Rabat, Morocco",
-  "email": "hamza.islah@um6p.ma",
-  "personal_email": "islah.hamza1997@gmail.com",
-  "resume": "assets/resume.pdf",
-  "photo": "assets/portrait.jpg",
   "bio": "I am a PhD candidate working at the intersection of Constraint Programming and Machine Learning. My research explores how machine learning can be used to support different stages of constraint problem solving, from helping users acquire and refine constraint models through query recommendation to predicting whether a problem is satisfiable before running an expensive solver. I am particularly interested in understanding how learning can complement the reasoning capabilities of constraint solvers and help make constraint programming more practical and adaptable.",
-  "profiles": {
-    "google_scholar": "https://scholar.google.com/citations?user=ofqXI7MAAAAJ&hl=fr",
-    "github": "https://github.com/ISLAH-Hamza",
-    "orcid": "https://orcid.org/0009-0009-9027-426X"
-  },
   "research_interests": [
     "Integration of machine learning and constraint programming to build systems that help with constraint problem modeling",
     "Predicting the unsatisfiability of constraint problems",

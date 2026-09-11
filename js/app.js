@@ -1,39 +1,17 @@
-/* Reads data/profile.json and renders the page.
-   Edit the JSON, never this file, to change what the site says. */
+/* Reads data/profile.json and renders the sections that keep changing
+   (research interests, publications, experience, education). Name, photo,
+   title, affiliation, links and contact emails are static in index.html
+   because they don't need to change often — edit them there directly.
+   Edit the JSON, never this file, to change what the dynamic sections say. */
 
 (function () {
   "use strict";
 
   var DATA_URL = "data/profile.json";
 
-  var LINK_LABELS = {
-    google_scholar: "Google Scholar",
-    github: "GitHub",
-    orcid: "ORCID",
-    linkedin: "LinkedIn",
-    dblp: "DBLP"
-  };
-
-  // Font Awesome classes for each profile key, plus the built-in
-  // email/resume links. Unknown keys fall back to a generic link glyph.
-  var LINK_ICONS = {
-    google_scholar: "fa-brands fa-google-scholar",
-    github: "fa-brands fa-github",
-    orcid: "fa-brands fa-orcid",
-    linkedin: "fa-brands fa-linkedin",
-    dblp: "fa-solid fa-book",
-    twitter: "fa-brands fa-x-twitter",
-    mastodon: "fa-brands fa-mastodon",
-    website: "fa-solid fa-globe",
-    email: "fa-solid fa-envelope",
-    resume: "fa-solid fa-file-arrow-down"
-  };
-
-  function icon(key) {
-    var i = el("i", LINK_ICONS[key] || "fa-solid fa-link");
-    i.setAttribute("aria-hidden", "true");
-    return i;
-  }
+  // Used to bold the "me" author in publication author lists. Kept in
+  // sync with the static name in index.html's rail.
+  var SURNAME = "Islah";
 
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -56,10 +34,6 @@
       a.target = "_blank";
     }
     return a;
-  }
-
-  function humanize(key) {
-    return key.replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); });
   }
 
   function titleCaseName(name) {
@@ -88,62 +62,8 @@
 
   /* ---------- sections ---------- */
 
-  function renderRail(data) {
-    var surname = (data.name || "").split(" ").slice(-1)[0];
-    fill("name", data.name || "");
-    fill("role", data.title || "");
-    fill("affil", [data.affiliation, data.location].filter(Boolean).join(", "));
-    document.title = titleCaseName(data.name || "Portfolio");
-
-    var list = document.getElementById("links");
-    list.innerHTML = "";
-
-    Object.keys(data.profiles || {}).forEach(function (key) {
-      if (!data.profiles[key]) return;
-      var li = el("li");
-      var a = link(data.profiles[key], LINK_LABELS[key] || humanize(key));
-      a.insertBefore(icon(key), a.firstChild);
-      li.appendChild(a);
-      list.appendChild(li);
-    });
-
-    if (data.email) {
-      var mail = el("li");
-      var mailLink = link("mailto:" + data.email, "Email");
-      mailLink.insertBefore(icon("email"), mailLink.firstChild);
-      mail.appendChild(mailLink);
-      list.appendChild(mail);
-    }
-
-    var cv = document.getElementById("resumeLink");
-    if (cv) {
-      if (data.resume) {
-        cv.href = data.resume;
-        cv.target = "_blank";
-        cv.rel = "noopener";
-        cv.hidden = false;
-        var cvIcon = cv.querySelector("i");
-        if (!cvIcon) cv.insertBefore(icon("resume"), cv.firstChild);
-      } else {
-        cv.hidden = true;
-      }
-    }
-
-    return surname;
-  }
-
   function renderResearch(data) {
     fill("bio", data.bio || "");
-
-    var photo = document.getElementById("portrait");
-    if (photo) {
-      if (data.photo) {
-        photo.src = data.photo;
-        photo.alt = titleCaseName(data.name || "");
-      } else {
-        photo.remove();
-      }
-    }
 
     var ul = document.getElementById("interests");
     ul.innerHTML = "";
@@ -157,21 +77,21 @@
     });
   }
 
-  function authorLine(authors, surname) {
+  function authorLine(authors) {
     var p = el("p", "pub-authors");
     (authors || []).forEach(function (author, i) {
       var clean = titleCaseName(author);
-      var isMe = surname && author.toLowerCase().indexOf(surname.toLowerCase()) >= 0;
+      var isMe = author.toLowerCase().indexOf(SURNAME.toLowerCase()) >= 0;
       p.appendChild(el("span", isMe ? "me" : null, clean));
       if (i < authors.length - 1) p.appendChild(document.createTextNode(", "));
     });
     return p;
   }
 
-  function pubEntry(pub, surname, status) {
+  function pubEntry(pub, status) {
     var wrap = el("article", "pub");
     wrap.appendChild(el("h4", "pub-title", pub.title));
-    wrap.appendChild(authorLine(pub.authors, surname));
+    wrap.appendChild(authorLine(pub.authors));
 
     var venue = el("p", "pub-venue");
     if (status) {
@@ -190,7 +110,7 @@
     return wrap;
   }
 
-  function renderPublications(data, surname) {
+  function renderPublications(data) {
     var host = document.getElementById("pubs");
     host.innerHTML = "";
     var pubs = data.publications || {};
@@ -199,7 +119,7 @@
       if (!items || !items.length) return;
       var section = el("div", "pub-group");
       section.appendChild(el("h3", null, title));
-      items.forEach(function (p) { section.appendChild(pubEntry(p, surname, status)); });
+      items.forEach(function (p) { section.appendChild(pubEntry(p, status)); });
       host.appendChild(section);
     }
 
@@ -234,22 +154,6 @@
     (data.education || []).forEach(function (deg) {
       host.appendChild(row(years(deg.start_year, deg.end_year), deg.degree, deg.institution));
     });
-  }
-
-  function contactLine(host, lead, address) {
-    if (!address) return;
-    var p = el("p", "contact-line");
-    p.appendChild(document.createTextNode(lead + " "));
-    p.appendChild(link("mailto:" + address, address));
-    p.appendChild(document.createTextNode("."));
-    host.appendChild(p);
-  }
-
-  function renderContact(data) {
-    var host = document.getElementById("contact-email");
-    host.innerHTML = "";
-    contactLine(host, "Write to me at", data.email);
-    contactLine(host, "or, for personal matters,", data.personal_email);
   }
 
   /* ---------- section highlighting in the side nav ---------- */
@@ -291,12 +195,10 @@
       return res.json();
     })
     .then(function (data) {
-      var surname = renderRail(data);
       renderResearch(data);
-      renderPublications(data, surname);
+      renderPublications(data);
       renderExperience(data);
       renderEducation(data);
-      renderContact(data);
       spy();
     })
     .catch(function (err) {

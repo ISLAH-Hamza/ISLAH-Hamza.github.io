@@ -1,15 +1,21 @@
 # Research portfolio
 
 Static site, no build step, no framework. Plain HTML, CSS and JavaScript.
-Everything on the page is rendered from `data/profile.json`.
+
+Content that rarely changes (name, photo, title, affiliation, profile links,
+resume link, contact emails) is hard-coded directly in `index.html`. Content
+that keeps growing over time (research interests, publications, experience,
+education) is rendered from `data/profile.json`.
 
 ```
 index.html
 css/style.css
-js/app.js        reads the JSON and builds every section
+js/app.js        reads the JSON and builds the sections that keep changing
 data/profile.json
 assets/portrait.jpg
 assets/          put resume.pdf here too
+robots.txt       tells search crawlers the whole site is indexable
+sitemap.xml      lists the page for crawlers
 ```
 
 ## Run it locally
@@ -33,34 +39,39 @@ Then open http://localhost:8000
 
 The site will be live at https://ISLAH-Hamza.github.io
 
-## Add your resume
+## Change static content (name, photo, title, links, resume, contact)
 
-Put the PDF at `assets/resume.pdf`, then set the field in `data/profile.json`:
+Edit `index.html` directly:
 
-```json
-"resume": "assets/resume.pdf"
-```
+- Name, role and affiliation: the `.name`, `.role` and `.affil` elements in the `<aside class="rail">`
+- Profile links (Google Scholar, GitHub, ORCID, email): the `<ul class="links">` list
+- Resume button: the `.resume-btn` link — point its `href` at `assets/resume.pdf` (or your file) and put the PDF at that path
+- Portrait: the `<img class="portrait">` in the `.hero` section — replace `assets/portrait.jpg`, or point `src` at another file. Use a portrait shaped image, roughly 4 by 5, at about 1000 pixels wide
+- Contact emails: the two `.contact-line` paragraphs in the `#contact` section
 
-While that field is an empty string the link stays hidden, so the site never
-shows a broken download.
-
-## Change the content
+## Change content that grows over time
 
 Edit `data/profile.json` only. The renderer handles these fields:
 
-- `name`, `title`, `affiliation`, `location`, `email`, `bio`, `resume`, `photo`
-- `profiles`: any key, any URL. Known keys get a proper label
-  (`google_scholar`, `github`, `orcid`, `linkedin`, `dblp`), unknown keys fall
-  back to the key name
+- `bio`: the opening paragraph next to the portrait
 - `research_interests`: list of sentences
 - `publications.accepted`, `publications.under_review`, `publications.preprints`.
   Each entry takes `title`, `authors`, `conference` or `journal`, `year`, and
-  either `doi` or `url`. Your own name is detected from `name` and set in bold
+  either `doi` or `url`. Your own name is detected by matching your surname
+  (set as `SURNAME` in `js/app.js`) and shown in bold
 - `experience`, `education`
 
-## Change the portrait
+## SEO metadata
 
-Replace `assets/portrait.jpg`, or point the `photo` field in the JSON at
-another file. Use a portrait shaped image, roughly 4 by 5, at about 1000 pixels
-wide. If `photo` is an empty string the image is removed and the opening
-paragraph runs full width.
+`index.html`'s `<head>` carries the metadata search engines and link previews
+read: a descriptive `<title>`, `meta description`/`keywords`/`robots`, a
+`canonical` link, Open Graph and Twitter Card tags for link previews, and a
+`schema.org` Person JSON-LD block (Google's Rich Results use this for the
+knowledge-panel-style profile info).
+
+All of these hard-code the site URL `https://islah-hamza.github.io/` — the
+same address `robots.txt` and `sitemap.xml` point at. If you publish under a
+different domain, update the URL in all four places: the `<link
+rel="canonical">`, the `og:url`/`og:image`/`twitter:image` meta tags, the
+JSON-LD `url`/`image`, `robots.txt`'s `Sitemap:` line, and `sitemap.xml`'s
+`<loc>`.
